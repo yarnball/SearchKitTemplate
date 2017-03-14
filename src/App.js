@@ -58,11 +58,12 @@ class App extends Component {
       const {
         bemBlocks, onClick, active, disabled, style, itemKey,
         label, count, showCount, showCheckbox} = props
-      const className = "active-item"
+      let className = ""
+      if (active) className += "active-item"
 
       return (
          <li>
-           <div checked={active} className='active-item'>
+           <div className={className}>
               <div onClick={onClick}>
                <a>
                  <div style={style} data-key={itemKey}></div>
@@ -99,9 +100,6 @@ class App extends Component {
 
         <LayoutBody>
 
-          <SideBar>
-
-          </SideBar>
           <LayoutResults>
             <ViewSwitcherHits
                 hitsPerPage={12} highlightFields={["title","plot"]}
