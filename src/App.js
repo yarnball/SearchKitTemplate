@@ -6,7 +6,7 @@ import { SearchkitManager,SearchkitProvider,
   ResetFilters, RangeFilter, NumericRefinementListFilter,
   ViewSwitcherHits, ViewSwitcherToggle, DynamicRangeFilter,
   InputFilter, GroupedSelectedFilters,
-  Layout, TopBar, LayoutBody, LayoutResults,
+  Layout, TopBar, LayoutBody, LayoutResults, RefinementOption,
   ActionBar, ActionBarRow, SideBar } from 'searchkit'
 import './index.css'
 import './custom/responsee.css'
@@ -58,18 +58,22 @@ class App extends Component {
       const {
         bemBlocks, onClick, active, disabled, style, itemKey,
         label, count, showCount, showCheckbox} = props
-      const className = ""
+      const className = "active-item"
 
       return (
-         <li><div onClick={onClick}><a>
-          <div style={style} data-key={itemKey}>
-            
-           <div className="text">{label}</div>
-            
-          </div></a>
-        </div></li>
+         <li>
+           <div checked={active} className='item-active'>
+              <div onClick={onClick}>
+               <a>
+                 <div style={style} data-key={itemKey}></div>
+                 <div className="text">{label}</div>
+               </a>
+              </div>
+            </div>
+        </li>
       )
    }
+
 //            <input type="checkbox" data-qa="checkbox" checked={active} readOnly ></input>
 //           <div className="text">{label}</div><div className="count">{count}</div>
 
@@ -96,7 +100,7 @@ class App extends Component {
         <LayoutBody>
 
           <SideBar>
-            <RefinementListFilter id="categories" title="Categories" field="type.raw" operator="OR"/>
+
           </SideBar>
           <LayoutResults>
             <ViewSwitcherHits
