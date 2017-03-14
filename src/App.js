@@ -48,6 +48,8 @@ const MovieHitsListItem = (props)=> {
   )
 }
 
+
+            
 class App extends Component {
   render() {
     const Searchbox = SearchBox;
@@ -56,18 +58,20 @@ class App extends Component {
       const {
         bemBlocks, onClick, active, disabled, style, itemKey,
         label, count, showCount, showCheckbox} = props
-      const className = "li222"
+      const className = ""
 
       return (
-        <div onClick={onClick}>
-          <div className={className} style={style} data-key={itemKey}>
-            <input type="checkbox" data-qa="checkbox" checked={active} readOnly className="checkbox" ></input>
-            <div className="text">{label}</div>
-            <div className="count">{count}</div>
-          </div>
-        </div>
+         <li><div onClick={onClick}><a>
+          <div style={style} data-key={itemKey}>
+            
+           <div className="text">{label}</div>
+            
+          </div></a>
+        </div></li>
       )
    }
+//            <input type="checkbox" data-qa="checkbox" checked={active} readOnly ></input>
+//           <div className="text">{label}</div><div className="count">{count}</div>
 
     return (
       <SearchkitProvider searchkit={searchkit}>
@@ -82,9 +86,7 @@ class App extends Component {
                   </a>            
                   <h1>SearchKit refinement filters to be on the right </h1>
                   <ul className="top-ul right">
-                     <li>            
-                            <a><RefinementListFilter id="categories" title="categories" field="type.raw" operator="OR" itemComponent={customItemComponent} /></a>
-                     </li>
+                    <RefinementListFilter id="categories" field="type.raw" operator="OR" itemComponent={customItemComponent} />
                   </ul>
                </div>
             </nav>
