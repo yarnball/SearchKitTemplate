@@ -62,7 +62,7 @@ class App extends Component {
 
       return (
          <li>
-           <div checked={active} className='item-active'>
+           <div checked={active} className='active-item'>
               <div onClick={onClick}>
                <a>
                  <div style={style} data-key={itemKey}></div>
