@@ -11,6 +11,7 @@ import { SearchkitManager,SearchkitProvider,
 import './index.css'
 import './custom/responsee.css'
 import './custom/template-style.css'
+import './custom/style.css'
 
 const host = "http://demo.searchkit.co/api/movies"
 const searchkit = new SearchkitManager(host)
@@ -35,16 +36,24 @@ const MovieHitsListItem = (props)=> {
   let url = "http://www.imdb.com/title/" + result._source.imdbId
   const source:any = extend({}, result._source, result.highlight)
   return (
-    <div className={bemBlocks.item().mix(bemBlocks.container("item"))} data-qa="hit">
-      <div className={bemBlocks.item("poster")}>
-        <img alt="presentation" data-qa="poster" src={result._source.poster}/>
-      </div>
-      <div className={bemBlocks.item("details")}>
-        <a href={url} target="_blank"><h2 className={bemBlocks.item("title")} dangerouslySetInnerHTML={{__html:source.title}}></h2></a>
-        <h3 className={bemBlocks.item("subtitle")}>Released in {source.year}, rated {source.imdbRating}/10</h3>
-        <div className={bemBlocks.item("text")} dangerouslySetInnerHTML={{__html:source.plot}}></div>
-      </div>
-    </div>
+              <article id={result._source.poster} className="gridpost line">
+                  <div className="s-12 l-6 post-image">                   
+                     <a href="post-1.html">
+                     <img src={result._source.poster} alt="Fashion 1" />
+                     </a>                
+                  </div>
+                  <div className="s-12 l-5 post-text">
+                     <a href="post-1.html">
+                        <h2 >{result._source.title}</h2>
+                     </a>
+                     <p>{result._source.actors}Lorem ipsum dolor sit amet, conse ctetuer. Duis autem vemeu iriure dolor adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat wisi enim.             
+                     </p>
+                  </div>
+                  <div className="s-12 l-1 post-date">
+                     <p className="date">07</p>
+                     <p className="month">mar</p>
+                  </div>
+               </article>
   )
 }
 
@@ -74,14 +83,34 @@ class App extends Component {
         </li>
       )
    }
+    const customItemComponent1 = (props) => {
 
+      const {
+        bemBlocks, onClick, active, disabled, style, itemKey,
+        label, count, showCount, showCheckbox} = props
+      let className = "TESTING"
+      if (active) className += "-active"
+
+      return (
+         <li>
+           <div className={className}>
+              <div onClick={onClick}>
+               <a>
+                 <div style={style} data-key={itemKey}></div>
+                 <div className="text">{label}</div>
+               </a>
+              </div>
+            </div>
+        </li>
+      )
+   }
 //            <input type="checkbox" data-qa="checkbox" checked={active} readOnly ></input>
 //           <div className="text">{label}</div><div className="count">{count}</div>
 
     return (
       <SearchkitProvider searchkit={searchkit}>
         <Layout>
-                        <header className="margin-bottom">
+                        <header>
                <div className="line">
             <nav>
                <div className="top-nav">
@@ -91,25 +120,41 @@ class App extends Component {
                   </a>            
                   <h1>SearchKit refinement filters to be on the right </h1>
                   <ul className="top-ul right">
-                    <RefinementListFilter id="categories" field="type.raw" operator="OR" itemComponent={customItemComponent} />
+                    <RefinementListFilter
+                    id="categories"
+                    field="type.raw"
+                    operator="OR"
+                    title=""
+                    itemComponent={customItemComponent} />
                   </ul>
                </div>
             </nav>
             </div>
         </header>
+               <div className="top-nav-low">
+                  <ul className="top-ul-low right">
+                    <RefinementListFilter title="" id="actors" field="type.raw" operator="OR" size={4} itemComponent={customItemComponent1} />
+                  </ul>
+               </div>
 
         <LayoutBody>
 
           <LayoutResults>
-            <ViewSwitcherHits
-                hitsPerPage={12} highlightFields={["title","plot"]}
-                sourceFilter={["plot", "title", "poster", "imdbId", "imdbRating", "year"]}
-                hitComponents={[
-                  {key:"grid", title:"Grid", itemComponent:MovieHitsGridItem, defaultOption:true},
-                  {key:"list", title:"List", itemComponent:MovieHitsListItem}
-                ]}
-                scrollTo="body"
-            />
+              <section id="home-section" className="line">
+                 <div className="margin">
+                    <div className="s-12 l-9">
+                    <ViewSwitcherHits
+                        hitsPerPage={12} highlightFields={["title","plot"]}
+                        sourceFilter={["plot", "title", "poster", "imdbId", "imdbRating", "year"]}
+                        hitComponents={[
+                          {key:"grid", title:"Grid", itemComponent:MovieHitsGridItem},
+                          {key:"list", title:"List", itemComponent:MovieHitsListItem, defaultOption:true}
+                        ]}
+                        scrollTo="body"
+                    />
+                    </div>
+                  </div>
+                </section>
             <NoHits suggestionsField={"title"}/>
           </LayoutResults>
 
