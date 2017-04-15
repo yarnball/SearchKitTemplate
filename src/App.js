@@ -93,11 +93,8 @@ const MovieHitsListItem = props => {
 };
 
 class App extends Component {
- 
-  render() {
-    const Searchbox = SearchBox;
-    const customItemComponent = props => {
-      const {itemKey,style,onClick,active,label,} = props;
+    customItemComponent(props) {
+    const {itemKey,style,onClick,active,label,} = props;
       let className = "";
       if (active) className += "active-item";
 
@@ -113,7 +110,10 @@ class App extends Component {
           </div>
         </li>
       );
-    };
+    }
+
+  render() {
+    const Searchbox = SearchBox;
     
     return (
       <SearchkitProvider searchkit={searchkit}>
