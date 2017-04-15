@@ -35,22 +35,30 @@ import "./custom/style.css";
 const host = "http://demo.searchkit.co/api/movies";
 const searchkit = new SearchkitManager(host);
 
-const MovieResult = props => {
-  const { bemBlocks, result } = props;
-  let url = "http://www.imdb.com/title/" + result._source.imdbId;
-  const source: any = extend({}, result._source, result.highlight);
-  return (
-    <div className={bemBlocks.item().mix(bemBlocks.container("item"))} data-qa="hit" >
-      <a href={url} target="_blank">
-        <div
-          data-qa="title"
-          className={bemBlocks.item("title")}
-          dangerouslySetInnerHTML={{ __html: source.title }}
-        />
-      </a>
-    </div>
-  );
-};
+class MovieResult extends Component {
+ constructor(props) {
+    super(props);
+
+    this.state = {
+      result: Object.assign({}, props.result)
+    };
+    console.log('Data is HERE!' + JSON.stringify(this.props.result))
+  }
+componentWillReceiveProps(nextProps) {
+    if (this.props.result !== nextProps.result) {
+      nextProps.loads();
+  }
+}
+  render() {
+    const result = this.props.result;
+    return (
+      <div key={result._id}>
+          {<img src={result._source.poster} width="10" height="14"/>}
+          <h1>{result._source.title}</h1>
+      </div>
+    )
+  }
+}
 
 
 class App extends Component {
