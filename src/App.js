@@ -49,6 +49,10 @@ class MovieHit extends React.Component {
   toggleEditMode = e => {
     this.setState({ editMode: !this.state.editMode })
   }
+  
+  closeEdit = e => {
+    this.setState({editMode: false})
+  }
 
   handleTextChange = e => {
     this.setState({title: e.target.value})
@@ -58,6 +62,7 @@ class MovieHit extends React.Component {
     const { result } = this.props
     const { title } = this.state
     return (
+      <div key={result._id}>
       <div>
         {this.state.editMode
         ? <Editor
@@ -70,44 +75,47 @@ class MovieHit extends React.Component {
             text={title}
           />}
       </div>
+      </div>
     );
   }
 }
 
 class MovieHits extends React.Component {
+  closeAll = e => {
+    this.components.forEach(component => component.closeEdit())
+  }
   render(){
     const { hits } = this.props
+    this.components = []
     return (
       <div>
-        {hits.map(hit => <MovieHit key={hit._id} result={hit} />)}
+        <button onClick={this.closeAll}>close all</button>
+        {hits.map(hit => <MovieHit ref={ref => this.components.push(ref)} key={hit._id} result={hit} />)}
       </div>
     )
   }
 }
 
 const Editor = props => {
-  return (
-    <h1>
-      <textarea
-        className="form-control"
-        onChange={props.handleTextChange}
-        value={props.text}
-      />
-      <button onClick={props.toggleEditMode}>Save</button>
-    </h1>
-  );
+   return (
+  <h1>
+    <textarea
+      className="form-control"
+      onChange={props.handleTextChange}
+      value={props.text}
+    />
+    <button onClick={props.toggleEditMode}>Save</button>
+  </h1>
+);
 };
 
 const Viewer = props => (
   <div>
-    <h1
-      className="editable"
-      dangerouslySetInnerHTML={{ __html: props.text }}
-      style={{ display: "inline-block" }}
-    />
+    <h1 className="editable" dangerouslySetInnerHTML={{ __html: props.text }} style={{display: 'inline-block'}} />
     <button onClick={props.toggleEditMode}>Edit</button>
   </div>
 );
+
 
 class App extends Component {
   render() {
