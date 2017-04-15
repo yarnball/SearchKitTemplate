@@ -49,6 +49,13 @@ class MovieResult extends Component {
         nextProps.loads();
     }
   }
+  handleTextChange = e => {
+    this.setState({ text: e.target.value })
+  }
+ 
+  toggleEditMode = () => {
+    this.setState(prev => ({ editMode: !prev.editMode }))
+  }
   render() {
     const result = this.props.result;
     return (
@@ -74,7 +81,7 @@ const Editor = props =>
     <textarea
       className="form-control"
       onChange={props.handleTextChange}
-      value={props.text}
+      value={props.result._source.title}
     />
     <button onClick={props.toggleEditMode}>Save</button>
   </h1>
