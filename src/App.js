@@ -44,22 +44,50 @@ class MovieResult extends Component {
     };
     console.log('Data is HERE!' + JSON.stringify(this.props.result))
   }
-componentWillReceiveProps(nextProps) {
-    if (this.props.result !== nextProps.result) {
-      nextProps.loads();
+  componentWillReceiveProps(nextProps) {
+      if (this.props.result !== nextProps.result) {
+        nextProps.loads();
+    }
   }
-}
   render() {
     const result = this.props.result;
     return (
       <div key={result._id}>
-          {<img src={result._source.poster} width="10" height="14"/>}
-          <h1>{result._source.title}</h1>
+{result._source.title}
+          <div>
+        {this.state.editMode
+        ? <Editor
+            toggleEditMode={this.toggleEditMode}
+            text={this.state.result.title}
+            handleTextChange={this.handleTextChange}
+          />
+        : <Viewer
+            toggleEditMode={this.toggleEditMode}
+            text={this.state.result.title}
+          />}
+      </div>
       </div>
     )
   }
 }
+const Editor = props =>
+  <div>
+    <textarea
+      className="form-control"
+      onChange={props.handleTextChange}
+      value={props.text}
+    />
+    <button onClick={props.toggleEditMode}>Save</button>
+  </div>
 
+const Viewer = props =>
+  <div>
+    <div
+      className="editable"
+      dangerouslySetInnerHTML={{ __html: (props.text) }}
+    />
+    <button onClick={props.toggleEditMode}>Edit</button>
+  </div>
 
 class App extends Component {
   render() {
