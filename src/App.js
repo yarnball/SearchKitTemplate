@@ -25,6 +25,7 @@ import {
   RefinementOption,
   ActionBar,
   ActionBarRow,
+  Hits,
   SideBar
 } from "searchkit";
 import "./index.css";
@@ -35,38 +36,52 @@ import "./custom/style.css";
 const host = "http://demo.searchkit.co/api/movies";
 const searchkit = new SearchkitManager(host);
 
-class MovieResult extends Component {
-  constructor(props) {
+class MovieHit extends React.Component {
+ constructor(props) {
     super(props);
 
     this.state = {
-      title: props.result._source.title
+      editMode: false,
+      title: props.result._source.title,
     };
+  }
+  
+  toggleEditMode = e => {
+    this.setState({ editMode: !this.state.editMode })
   }
 
   handleTextChange = e => {
-    this.setState({ title: e.target.value });
-  };
+    this.setState({title: e.target.value})
+  }
 
-  toggleEditMode = () => {
-    this.setState(prev => ({ editMode: !prev.editMode }));
-  };
   render() {
-    const { result } = this.props;
-    const { title } = this.state;
+    const { result } = this.props
+    const { title } = this.state
     return (
-      <div key={result._id}>
-        <div>
-          {this.state.editMode
-            ? <Editor
-                toggleEditMode={this.toggleEditMode}
-                text={title}
-                handleTextChange={this.handleTextChange}
-              />
-            : <Viewer toggleEditMode={this.toggleEditMode} text={title} />}
-        </div>
+      <div>
+        {this.state.editMode
+        ? <Editor
+            toggleEditMode={this.toggleEditMode}
+            text={title}
+            handleTextChange={this.handleTextChange}
+          />
+        : <Viewer
+            toggleEditMode={this.toggleEditMode}
+            text={title}
+          />}
       </div>
     );
+  }
+}
+
+class MovieHits extends React.Component {
+  render(){
+    const { hits } = this.props
+    return (
+      <div>
+        {hits.map(hit => <MovieHit key={hit._id} result={hit} />)}
+      </div>
+    )
   }
 }
 
@@ -103,27 +118,15 @@ class App extends Component {
           <LayoutBody>
 
             <LayoutResults>
+             <RefinementListFilter
+                title=""
+                id="actors"
+                field="type.raw"
+                operator="OR"
+                size={4}
+              />
               <section id="home-section" className="line">
-                <ViewSwitcherHits
-                  hitsPerPage={12}
-                  highlightFields={["title", "plot"]}
-                  sourceFilter={[
-                    "plot",
-                    "title",
-                    "poster",
-                    "imdbId",
-                    "imdbRating",
-                    "year"
-                  ]}
-                  hitComponents={[
-                    {
-                      key: "grid",
-                      title: "Grid",
-                      itemComponent: MovieResult
-                    }
-                  ]}
-                  scrollTo="body"
-                />
+                 <Hits hitsPerPage={6} listComponent={MovieHits}/>
               </section>
             </LayoutResults>
 
