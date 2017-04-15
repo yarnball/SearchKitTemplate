@@ -114,38 +114,7 @@ class App extends Component {
         </li>
       );
     };
-    const customItemComponent1 = props => {
-      const {
-        bemBlocks,
-        onClick,
-        active,
-        disabled,
-        style,
-        itemKey,
-        label,
-        count,
-        showCount,
-        showCheckbox
-      } = props;
-      let className = "TESTING";
-      if (active) className += "-active";
-
-      return (
-        <li>
-          <div className={className}>
-            <div onClick={onClick}>
-              <a>
-                <div style={style} data-key={itemKey} />
-                <div className="text">{label}</div>
-              </a>
-            </div>
-          </div>
-        </li>
-      );
-    };
-    //            <input type="checkbox" data-qa="checkbox" checked={active} readOnly ></input>
-    //           <div className="text">{label}</div><div className="count">{count}</div>
-
+    
     return (
       <SearchkitProvider searchkit={searchkit}>
         <Layout>
@@ -172,18 +141,6 @@ class App extends Component {
               </nav>
             </div>
           </header>
-          <div className="top-nav-low">
-            <ul className="top-ul-low right">
-              <RefinementListFilter
-                title=""
-                id="actors"
-                field="type.raw"
-                operator="OR"
-                size={4}
-                itemComponent={customItemComponent1}
-              />
-            </ul>
-          </div>
 
           <LayoutBody>
 
