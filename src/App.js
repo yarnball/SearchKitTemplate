@@ -98,6 +98,7 @@ class App extends Component {
     this.state = {
       result: this.props.result
     };
+    console.log('constructor state' + this.state.result)
   }
 componentWillReceiveProps(nextProps) {
     if (this.props.result !== nextProps.result) {
