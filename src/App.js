@@ -81,7 +81,7 @@ const Editor = props =>
     <textarea
       className="form-control"
       onChange={props.handleTextChange}
-      value={props.result._source.title}
+      value={props.text}
     />
     <button onClick={props.toggleEditMode}>Save</button>
   </h1>
