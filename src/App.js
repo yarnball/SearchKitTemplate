@@ -1,32 +1,6 @@
 import React, { Component } from "react";
 import { extend } from "lodash";
-import {
-  SearchkitManager,
-  SearchkitProvider,
-  SearchBox,
-  RefinementListFilter,
-  Pagination,
-  HierarchicalMenuFilter,
-  HitsStats,
-  SortingSelector,
-  NoHits,
-  ResetFilters,
-  RangeFilter,
-  NumericRefinementListFilter,
-  ViewSwitcherHits,
-  ViewSwitcherToggle,
-  DynamicRangeFilter,
-  InputFilter,
-  GroupedSelectedFilters,
-  Layout,
-  TopBar,
-  LayoutBody,
-  LayoutResults,
-  RefinementOption,
-  ActionBar,
-  ActionBarRow,
-  SideBar
-} from "searchkit";
+import {SearchkitManager, SearchkitProvider, SearchBox, RefinementListFilter, Pagination, HierarchicalMenuFilter, HitsStats, SortingSelector, NoHits, ResetFilters, RangeFilter, NumericRefinementListFilter, ViewSwitcherHits, ViewSwitcherToggle, DynamicRangeFilter, InputFilter, GroupedSelectedFilters, Layout, TopBar, LayoutBody, LayoutResults, RefinementOption, ActionBar, ActionBarRow, SideBar} from "searchkit";
 import "./index.css";
 import "./custom/responsee.css";
 import "./custom/template-style.css";
@@ -42,13 +16,17 @@ class MovieResult extends Component {
     this.state = {
       result: Object.assign({}, props.result)
     };
-    console.log('Data is HERE!' + JSON.stringify(this.props.result._source.title))
+    this.handleTextChange = this.handleTextChange.bind(this);
+    this.toggleEditMode = this.toggleEditMode.bind(this);
+    // this.onChange = this.onChange.bind(this);
+    // console.log('Data is HERE!' + JSON.stringify(this.props.result._source.title))
   }
   componentWillReceiveProps(nextProps) {
       if (this.props.result !== nextProps.result) {
         nextProps.loads();
     }
   }
+
   handleTextChange = e => {
     this.setState({ text: e.target.value })
   }
@@ -76,6 +54,7 @@ class MovieResult extends Component {
     )
   }
 }
+
 const Editor = props =>
   <h1>
     <textarea
