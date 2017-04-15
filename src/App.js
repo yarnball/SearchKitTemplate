@@ -92,9 +92,19 @@ const MovieHitsListItem = props => {
   );
 };
 
-class App extends Component {
-    customItemComponent(props) {
-    const {itemKey,style,onClick,active,label,} = props;
+const customItemComponent = props => {
+      const {
+        bemBlocks,
+        onClick,
+        active,
+        disabled,
+        style,
+        itemKey,
+        label,
+        count,
+        showCount,
+        showCheckbox
+      } = props;
       let className = "";
       if (active) className += "active-item";
 
@@ -110,8 +120,9 @@ class App extends Component {
           </div>
         </li>
       );
-    }
+};
 
+class App extends Component {
   render() {
     const Searchbox = SearchBox;
     
