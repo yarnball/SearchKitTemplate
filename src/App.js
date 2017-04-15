@@ -42,7 +42,7 @@ class MovieResult extends Component {
     this.state = {
       result: Object.assign({}, props.result)
     };
-    console.log('Data is HERE!' + JSON.stringify(this.props.result))
+    console.log('Data is HERE!' + JSON.stringify(this.props.result._source.title))
   }
   componentWillReceiveProps(nextProps) {
       if (this.props.result !== nextProps.result) {
@@ -53,17 +53,16 @@ class MovieResult extends Component {
     const result = this.props.result;
     return (
       <div key={result._id}>
-{result._source.title}
           <div>
         {this.state.editMode
         ? <Editor
             toggleEditMode={this.toggleEditMode}
-            text={this.state.result.title}
+            text={this.state.result._source.title}
             handleTextChange={this.handleTextChange}
           />
         : <Viewer
             toggleEditMode={this.toggleEditMode}
-            text={this.state.result.title}
+            text={this.state.result._source.title}
           />}
       </div>
       </div>
@@ -71,18 +70,18 @@ class MovieResult extends Component {
   }
 }
 const Editor = props =>
-  <div>
+  <h1>
     <textarea
       className="form-control"
       onChange={props.handleTextChange}
       value={props.text}
     />
     <button onClick={props.toggleEditMode}>Save</button>
-  </div>
+  </h1>
 
 const Viewer = props =>
   <div>
-    <div
+    <h1
       className="editable"
       dangerouslySetInnerHTML={{ __html: (props.text) }}
     />
