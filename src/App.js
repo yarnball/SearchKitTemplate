@@ -93,34 +93,11 @@ const MovieHitsListItem = props => {
 };
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      result: this.props.result
-    };
-    console.log('constructor state' + this.state.result)
-  }
-componentWillReceiveProps(nextProps) {
-    if (this.props.result !== nextProps.result) {
-      nextProps.load();
-  }
-  console.log(nextProps)
-}
+ 
   render() {
     const Searchbox = SearchBox;
     const customItemComponent = props => {
-      const {
-        bemBlocks,
-        onClick,
-        active,
-        disabled,
-        style,
-        itemKey,
-        label,
-        count,
-        showCount,
-        showCheckbox
-      } = props;
+      const {itemKey,style,onClick,active,label,} = props;
       let className = "";
       if (active) className += "active-item";
 
