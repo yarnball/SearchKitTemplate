@@ -95,15 +95,15 @@ const MovieHitsListItem = props => {
 class App extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      result: Object.assign({}, this.props.result)
+      result: this.props.result
     };
   }
 componentWillReceiveProps(nextProps) {
-  if (nextProps.params.id !== this.props.params.id) {
-    // fetchTest(nextProps.params.id);
+    if (this.props.result !== nextProps.result) {
+      nextProps.load();
   }
+  console.log(nextProps)
 }
   render() {
     const Searchbox = SearchBox;
