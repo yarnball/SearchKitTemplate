@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { extend } from "lodash";
 import {
   SearchkitManager,
   SearchkitProvider,
@@ -33,6 +32,11 @@ import "./custom/responsee.css";
 import "./custom/template-style.css";
 import "./custom/style.css";
 
+import { extend, map, identity, includes, defaults } from "lodash";
+
+
+let block = require("bem-cn")
+
 const host = "http://demo.searchkit.co/api/movies";
 const searchkit = new SearchkitManager(host);
 
@@ -63,7 +67,6 @@ class MovieHit extends React.Component {
     const { title } = this.state
     return (
       <div key={result._id}>
-      <div>
         {this.state.editMode
         ? <Editor
             toggleEditMode={this.toggleEditMode}
@@ -75,8 +78,68 @@ class MovieHit extends React.Component {
             text={title}
           />}
       </div>
-      </div>
     );
+  }
+}
+
+
+class customListComponent1 extends React.Component {
+static defaultProps: any = {
+    mod: "sk-item-list",
+    showCount: true,
+    itemComponent: customListComponent1,
+    translate:identity,
+    multiselect: true,
+    selectItems: [],
+    countFormatter:identity
+  }
+
+  isActive(option){
+    const { selectedItems, multiselect } = this.props
+    if (multiselect){
+      return includes(selectedItems, option.key)
+    } else {
+      if (selectedItems.length == 0) return null
+      return selectedItems[0] == option.key
+    }
+  }
+
+  render() {
+    const {
+      mod, itemComponent, items, selectedItems = [], translate,
+      toggleItem, setItems, multiselect, countFormatter,
+      disabled, showCount, className, docCount
+    } = this.props
+    const bemBlocks = {
+      container: block(mod),
+      option: block(`${mod}-option`)
+    }
+
+    const toggleFunc = multiselect ? toggleItem : (key => setItems([key]))
+
+    const actions = map(items, (option) => {
+      const label = option.title || option.label || option.key
+      return React.createElement(itemComponent, {
+        label: translate(label),
+        onClick: () => toggleFunc(option.key),
+        bemBlocks: bemBlocks,
+        key: option.key,
+        itemKey:option.key,
+        count: countFormatter(option.doc_count),
+        rawCount:option.doc_count,
+        listDocCount: docCount,
+        disabled:option.disabled,
+        showCount,
+        active: this.isActive(option)
+      })
+      
+    })
+    console.log(actions)
+    return (
+      <div data-qa="options" className={bemBlocks.container().mix(className) }>
+        {actions.key}
+      </div>
+    )
   }
 }
 
@@ -127,11 +190,11 @@ class App extends Component {
 
             <LayoutResults>
              <RefinementListFilter
-                title=""
+                title="Categories"
                 id="actors"
                 field="type.raw"
                 operator="OR"
-                size={4}
+                listComponent={customListComponent1}
               />
               <section id="home-section" className="line">
                  <Hits hitsPerPage={6} listComponent={MovieHits}/>
